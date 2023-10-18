@@ -1,10 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import ReactTooltip from 'react-tooltip';
+import React, { useState, useEffect } from "react";
+import { motion } from "framer-motion";
+import ReactTooltip from "react-tooltip";
 
-import { AppWrap, MotionWrap } from '../../wrapper';
-import { urlFor, client } from '../../client';
-import './Skills.scss';
+import { AppWrap, MotionWrap } from "../../wrapper";
+import { urlFor, client } from "../../client";
+import "./Skills.scss";
+import { getData } from "../../firebase/functions";
+import { COLLECTIONS, DOCUMENTS } from "../../constants/firebase";
 
 const Skills = () => {
   const [experiences, setExperiences] = useState([]);
@@ -13,14 +15,20 @@ const Skills = () => {
   useEffect(() => {
     const query = '*[_type == "experiences"]';
     const skillsQuery = '*[_type == "skills"]';
+    getData(COLLECTIONS.skills, DOCUMENTS.techSkills).then((data) => {
+      console.log("htka++", data);
+      setSkills(data);
+    });
 
     client.fetch(query).then((data) => {
+      console.log("ex sanity", data);
       setExperiences(data);
     });
 
-    client.fetch(skillsQuery).then((data) => {
-      setSkills(data);
-    });
+    // client.fetch(skillsQuery).then((data) => {
+    //   console.log("skills sanity", data);
+    //   setSkills(data);
+    // });
   }, []);
 
   return (
@@ -40,7 +48,7 @@ const Skills = () => {
                 className="app__flex"
                 style={{ backgroundColor: skill.bgColor }}
               >
-                <img src={urlFor(skill.icon)} alt={skill.name} />
+                <img src={skill.image} alt={skill.name} />
               </div>
               <p className="p-text">{skill.name}</p>
             </motion.div>
@@ -91,7 +99,7 @@ const Skills = () => {
 };
 
 export default AppWrap(
-  MotionWrap(Skills, 'app__skills'),
-  'skills',
-  'app__whitebg',
+  MotionWrap(Skills, "app__skills"),
+  "skills",
+  "app__whitebg"
 );
