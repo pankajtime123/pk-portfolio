@@ -5,6 +5,8 @@ import { motion } from "framer-motion";
 import { AppWrap, MotionWrap } from "../../wrapper";
 import { urlFor, client } from "../../client";
 import "./Work.scss";
+import { COLLECTIONS, DOCUMENTS } from "../../constants/firebase";
+import { getData } from "../../firebase/functions";
 
 const Work = () => {
   const [works, setWorks] = useState([]);
@@ -15,7 +17,13 @@ const Work = () => {
   useEffect(() => {
     const query = '*[_type == "works"]';
 
-    client.fetch(query).then((data) => {
+    // client.fetch(query).then((data) => {
+    //   console.log("works", data);
+    //   setWorks(data);
+    //   setFilterWork(data);
+    // });
+
+    getData(COLLECTIONS.projects, DOCUMENTS.personalProjects).then((data) => {
       console.log("works", data);
       setWorks(data);
       setFilterWork(data);
@@ -73,7 +81,7 @@ const Work = () => {
             key={index}
           >
             <div className="app__work-img app__flex">
-              <img src={urlFor(work.imgUrl)} alt={work.name} />
+              <img src={work?.image} alt={work.title} />
 
               <motion.div
                 whileHover={{ opacity: [0, 1] }}
