@@ -29,6 +29,7 @@ export const getData = async (
   documentId,
   fieldName = "data"
 ) => {
+  console.log("hh", collectionName, documentId, fieldName);
   const docRef = doc(collection(db, collectionName), documentId);
   const docSnapshot = await getDoc(docRef);
 

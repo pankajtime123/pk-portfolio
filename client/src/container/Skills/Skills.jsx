@@ -16,18 +16,17 @@ const Skills = () => {
     const query = '*[_type == "experiences"]';
     const skillsQuery = '*[_type == "skills"]';
     getData(COLLECTIONS.skills, DOCUMENTS.techSkills).then((data) => {
-      console.log("htka++", data);
       setSkills(data);
     });
 
-    client.fetch(query).then((data) => {
-      console.log("ex sanity", data);
+    getData(COLLECTIONS.experiences, DOCUMENTS.techExperiences).then((data) => {
+      console.log("khadsfk", data);
       setExperiences(data);
     });
 
-    // client.fetch(skillsQuery).then((data) => {
-    //   console.log("skills sanity", data);
-    //   setSkills(data);
+    // client.fetch(query).then((data) => {
+    //   console.log("ex sanity", data);
+    //   setExperiences(data);
     // });
   }, []);
 
@@ -37,7 +36,7 @@ const Skills = () => {
 
       <div className="app__skills-container">
         <motion.div className="app__skills-list">
-          {skills.map((skill) => (
+          {skills?.map((skill) => (
             <motion.div
               whileInView={{ opacity: [0, 1] }}
               transition={{ duration: 0.5 }}
@@ -55,7 +54,7 @@ const Skills = () => {
           ))}
         </motion.div>
         <div className="app__skills-exp">
-          {experiences.map((experience) => (
+          {experiences?.map((experience) => (
             <motion.div
               whileInView={{ x: [-100, 0], opacity: [0, 1] }}
               transition={{ duration: 0.5 }}
@@ -66,7 +65,7 @@ const Skills = () => {
                 <p className="bold-text">{experience.year}</p>
               </div>
               <motion.div className="app__skills-exp-works">
-                {experience.works.map((work) => (
+                {experience?.works?.map((work) => (
                   <>
                     <motion.div
                       whileInView={{ opacity: [0, 1] }}
